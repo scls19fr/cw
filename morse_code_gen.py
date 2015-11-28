@@ -8,6 +8,9 @@ import sys
 FALSE = '0'
 TRUE = '1'
 
+import logging
+logger = logging.getLogger(__name__)
+
 class MorseGenerator(object):
     def __init__(self):
         pass
@@ -22,8 +25,11 @@ class MorseGenerator(object):
 
     def _feed(self, message):
         self.bin = mtalk.encode(message, encoding_type='binary')
+        logger.debug(self.bin)
         self.lst_bits_nb = self._get_list_of_nb_of_same_bit(self.bin)
         self.lst_bits_ref = [bit for _, bit, _ in self._bit_generator(self.lst_bits_nb)]
+        logger.debug(self.lst_bits_ref)
+        logger.debug(self.lst_bits_nb)
 
     def _send(self):
         self._generate_signal(self.lst_bits_nb)    
@@ -59,14 +65,21 @@ class MorseGenerator(object):
                 self.on(nb_bits, *args, **kwargs)
 
 def main(message="MORSE CODE"):
-    print(message)
+    logging.basicConfig(level=logging.DEBUG)
+
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Send morse code')
+    parser.add_argument('--msg', help='Message', default='MORSE CODE')
+    args = parser.parse_args()
+    message = args.msg
+
+
     morse_gen = MorseGenerator()
-    print(mtalk.encode(message))
-    morse_gen._feed(message)
-    print(morse_gen.bin)
-    print(morse_gen.lst_bits_ref)
-    print(morse_gen.lst_bits_nb)
-    morse_gen._send()
+    logger.debug(message)
+    logger.debug(mtalk.encode(message))
+    morse_gen.send(message)
+    
     print("")
 
 if __name__ == '__main__':
