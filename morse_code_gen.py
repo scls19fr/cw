@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import absolute_import
+
 import morse_talk as mtalk
 import sys
 
@@ -55,20 +57,6 @@ class MorseGenerator(object):
                 self.off(nb_bits, *args, **kwargs)
             elif str(bit) == TRUE:
                 self.on(nb_bits, *args, **kwargs)
-
-class LightingMorseGenerator(MorseGenerator):
-    def __init__(self, *args, **kwargs):
-        super(LightingMorseGenerator, self).__init__(*args, **kwargs)
-        self.board = ...
-
-    def on(self, nb, *args, **kwargs):
-        pass
-
-    def off(self, nb, *args, **kwargs):
-        pass
-
-    def close(self):
-        self.board = ...
 
 def main(message="MORSE CODE"):
     print(message)
