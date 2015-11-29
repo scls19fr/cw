@@ -69,24 +69,57 @@ def mlength(message, N=1, word_spaced=True):
         N -= 1
     return N
 
-def wpm_to_ms(wpm, word=WORD, use_decimal=True):
+def wpm_to_duration(wpm, output='timedelta', word=WORD):
     """
     Convert from WPM (word per minutes) to 
-    element duration (in ms)
+    element duration
 
-    >>> wpm_to_ms(5)
+    Parameters
+    ----------
+    wpm : int or float - word per minute
+    output : String - type of output
+        'timedelta'
+        'float'
+        'decimal'
+    word : String - reference word (PARIS by default)
+
+    Returns
+    -------
+    duration : timedelta or float or decimal.Decimal - duration of an element
+
+    >>> wpm_to_duration(5, output='decimal')
     Decimal('240')
 
-    >>> wpm_to_ms(5, use_decimal=False)
+    >>> wpm_to_duration(5, output='float')
     240.0
+
+    >>> wpm_to_duration(5, output='timedelta')
+    datetime.timedelta(0, 0, 240000)
+
+    >>> wpm_to_duration(13, output='decimal')
+    Decimal('92.30769230769230769230769231')
     """
-    N = mlength(_repeat_word(word, wpm))
-    if use_decimal:
+    if wpm == int(wpm): # is integer
+        N = mlength(_repeat_word(word, wpm))
+    else:
+        raise NotImplementedError("Only support integer")
+        """
+            >>> wpm_to_duration(4.95, output='timedelta')
+            datetime.timedelta(0, 0, 240000)
+        """
+        mult = 5
+        N = wpm_to_duration(mult, output='float', word=WORD)
+        N = mult * wpm / N
+    output = output.lower()
+    if output == 'decimal':
         import decimal
-        ms = 60 * 1000 / decimal.Decimal(N)
-    else: # use float
-        ms = 60 * 1000 / float(N)
-    return ms
+        duration = 60 * 1000 / decimal.Decimal(N)
+    elif output == 'float':
+        duration = 60 * 1000 / float(N)
+    elif output == 'timedelta':
+        import datetime
+        duration = datetime.timedelta(seconds=(60 / float(N)))
+    return duration
 
 def main():
     import doctest
