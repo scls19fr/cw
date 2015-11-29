@@ -1,6 +1,28 @@
 """
-CLI Usage:
-$ python tree.py --c ---
+A Morse Binary Tree Implementation
+
+Copyright (C) 2015 by
+Sébastien Celles <s.celles@gmail.com>
+All rights reserved.
+
+CLI Usage
+=========
+
+$ python tree.py --c " ..."
+{'-': {'-': {'char': '3'}, 'char': 'V'},
+ '.': {'-': {'char': '4'}, '.': {'char': '5'}, 'char': 'H'},
+ 'char': 'S'}
+
+$ python tree.py --c " ---"
+{'-': {'-': {'char': '0'}, '.': {'char': '9'}},
+ '.': {'.': {'.': {'char': ':'}, 'char': '8'}},
+ 'char': 'O'}
+
+Dev usage
+=========
+
+mt = MorseBinaryTree()
+print(mt['...'])
 
 """
 
@@ -8,6 +30,10 @@ $ python tree.py --c ---
 from morse import d_morse
 
 class MorseBinaryTree(object):
+    """
+    Morse binary tree
+    """
+
     def __init__(self, d=None, tree=None, char='char'):
         self._tree = {}
 
