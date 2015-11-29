@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from tree import MorseBinaryTree
 from nose.tools import assert_equals
 
