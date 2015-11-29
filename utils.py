@@ -98,18 +98,16 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
 
     >>> wpm_to_duration(13, output='decimal')
     Decimal('92.30769230769230769230769231')
+
+    >>> wpm_to_duration(5.01, output='timedelta')
+    datetime.timedelta(0, 0, 239521)
     """
     if wpm == int(wpm): # is integer
         N = mlength(_repeat_word(word, wpm))
     else:
-        raise NotImplementedError("Only support integer")
-        """
-            >>> wpm_to_duration(4.95, output='timedelta')
-            datetime.timedelta(0, 0, 240000)
-        """
         mult = 5
-        N = wpm_to_duration(mult, output='float', word=WORD)
-        N = mult * wpm / N
+        N = mlength(_repeat_word(word, mult))
+        N = N * wpm / mult
     output = output.lower()
     if output == 'decimal':
         import decimal
