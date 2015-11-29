@@ -107,7 +107,7 @@ class MorseBinaryTree(object):
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description='Send morse code')
+    parser = argparse.ArgumentParser(description='Display morse binary tree')
     parser.add_argument('--c', help='Morse code character', default='')
     args = parser.parse_args()
     c = args.c.strip()
