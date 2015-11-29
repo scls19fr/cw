@@ -11,6 +11,7 @@ All rights reserved.
 
 import matplotlib.pyplot as plt
 import morse_talk as mtalk
+from utils import binarize
 
 def _create_ax(ax):
     """
@@ -24,18 +25,6 @@ def _create_ax(ax):
         return axs
     else:
         return ax
-
-def _binarize(message):
-    """
-    Return a list of bit (0 or 1)
-
-    >>> _binarize("SOS")
-    [1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1]
-    """
-    s = mtalk.encode(message, encoding_type='binary')
-    l = list(s)
-    l = list(map(lambda x: int(x), l))
-    return l
 
 def _create_x_y(l):
     """
@@ -67,15 +56,15 @@ def plot(message, ax = None):
 
     Returns: ax a Matplotlib Axe
     """
-    l = _binarize(message)
-    x, y = _create_x_y(l)
+    lst_bin = binarize(message)
+    x, y = _create_x_y(lst_bin)
     ax = _create_ax(ax)
     ax.plot(x, y, linewidth=2.0)
     delta_y = 0.1
     ax.set_ylim(-delta_y, 1 + delta_y)
     ax.set_yticks([0, 1])
     delta_x = 0.5
-    ax.set_xlim(-delta_x, len(l) + delta_x)
+    ax.set_xlim(-delta_x, len(lst_bin) + delta_x)
     return ax
 
 def main():
