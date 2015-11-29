@@ -21,14 +21,18 @@ import morse_talk as mtalk
 def main():
     parser = argparse.ArgumentParser(description='Send morse code')
     parser.add_argument('--msg', help='Message', default='MORSE CODE')
+    parser.add_argument('--duration', help='Element duration', default=1)
     args = parser.parse_args()
     message = args.msg
+    duration = float(args.duration)
+    #import datetime
+    #duration = datetime.timedelta(seconds=0.15) # ToFix
 
     print(message)
     print(mtalk.encode(message))
     print(mtalk.encode(message, encoding_type='binary'))
 
-    ax = plotter.plot(message)
+    ax = plotter.plot(message, duration)
     plt.show()
 
 if __name__ == '__main__':

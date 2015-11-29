@@ -26,7 +26,7 @@ def _create_ax(ax):
     else:
         return ax
 
-def _create_x_y(l):
+def _create_x_y(l, duration=1):
     """
     Create 2 lists
         x: time (as unit of dot (dit)
@@ -46,25 +46,25 @@ def _create_x_y(l):
     for i, bit in enumerate(l):
         y.append(bit)
         y.append(bit)
-        x.append(i - 1)
-        x.append(i)
+        x.append((i - 1) * duration)
+        x.append(i * duration)
     return x, y
 
-def plot(message, ax = None):
+def plot(message, duration=1, ax = None):
     """
     Plot a message
 
     Returns: ax a Matplotlib Axe
     """
     lst_bin = _encode_binary(message)
-    x, y = _create_x_y(lst_bin)
+    x, y = _create_x_y(lst_bin, duration)
     ax = _create_ax(ax)
     ax.plot(x, y, linewidth=2.0)
     delta_y = 0.1
     ax.set_ylim(-delta_y, 1 + delta_y)
     ax.set_yticks([0, 1])
-    delta_x = 0.5
-    ax.set_xlim(-delta_x, len(lst_bin) + delta_x)
+    delta_x = 0.5 * duration
+    ax.set_xlim(-delta_x, len(lst_bin) * duration + delta_x)
     return ax
 
 def main():
