@@ -40,14 +40,20 @@ def _encode_binary(message, on=1, off=0):
     lst = [item for sublist in l for item in sublist] # flatten list
     return lst[1:]
 
-def _repeat_word(word, N):
+def _repeat_word(word, N, word_space=" "):
     """
+    Return a repeated string
+
     >>> word = "PARIS"
+
     >>> _repeat_word(word, 5)
     'PARIS PARIS PARIS PARIS PARIS'
+
+    >>> _repeat_word(word, 5, word_space="")
+    'PARISPARISPARISPARISPARIS'
     """
-    message = (" " + word) * N
-    message = message[1:]
+    message = (word_space + word) * N
+    message = message[len(word_space):]
     return message
 
 def mlength(message, N=1, word_spaced=True):
@@ -66,7 +72,7 @@ def mlength(message, N=1, word_spaced=True):
     lst_bin = _encode_binary(message)
     N = len(lst_bin)
     if word_spaced:
-        N -= 1
+        N -= 1 # E is one "dit" so we remove it
     return N
 
 def wpm_to_duration(wpm, output='timedelta', word=WORD):
