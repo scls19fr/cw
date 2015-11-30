@@ -2,7 +2,7 @@
 
 some Python experiments with Morse code
 
-Code is merged to
+Code was merged to
 
 https://github.com/morse-talk/morse-talk
 
