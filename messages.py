@@ -33,6 +33,23 @@ class Message(object):
         """Returns parsed message"""
         pass
 
+    def _split(self, s, separator):
+        """Splits string s using 'separator'
+        if separator is an empty string
+        a list of characters is returned
+
+        >>> message = Message()
+        >>> message._split("abcd" , '')
+        ['a', 'b', 'c', 'd']
+
+        >>> message._split("a b c d" , ' ')
+        ['a', 'b', 'c', 'd']
+        """
+        if separator != '':
+            return s.split(separator)
+        else:
+            return list(s)
+
 class SEP:
     pass
 
@@ -102,10 +119,7 @@ class TextMessage(Message):
         >>> message._parse_word('HELLO')
         ['H', 'E', 'L', 'L', 'O']
         """
-        if self.sep.char != '':
-            return word.split(self.sep.char)
-        else:
-            return list(word)
+        return self._split(word, self.sep.char)
 
     def _parse_sentence(self, sentence):
         """
