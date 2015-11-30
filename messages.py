@@ -57,7 +57,7 @@ class Message(object):
         else:
             return list(s)
 
-class SEP:
+class SEP(object):
     pass
 
 class TEXT_SEP(SEP):
@@ -69,11 +69,29 @@ class MORSE_SEP(SEP):
     char = ' '
     word = ' '
 
-class SEP_NB:
+class BIN_MORSE_SEP(SEP):
+    bit = ''
+    elt = ''
+    char = ''
+    word = ''
+
+class SEP_NB(object):
     pass
 
+class TEXT_SEP_NB(SEP_NB):
+    char = 1
+    word = 1
+
 class MORSE_SEP_NB(SEP_NB):
-    pass
+    elt = 1
+    char = 1
+    word = 1
+
+class BIN_MORSE_SEP_NB(SEP_NB):
+    bit = 1
+    elt = 1
+    char = 1
+    word = 1
 
 class TextMessage(Message):
     """
