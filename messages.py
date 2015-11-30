@@ -2,10 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Some class to manage
+Some Python classes to manage (parse and format)
  - Text message
  - Morse code message
  - Binary morse code message
+
+A message is composed of:
+ - sentences (which are composed of)
+   - words (which are composed of)
+     - characters (which are composed of)
+       - elements (which are composed of) - Morse code - elements are DIT . or DAH -
+         - bits - Binary morse code - bits are 1 or 0
 
 Copyright (C) 2015 by
 Sébastien Celles <s.celles@gmail.com>
@@ -182,6 +189,9 @@ class BinaryMorseCodeMessage(Message):
     def format(self, lst_message):
         return
 
+    def _format_bit(self, bit):
+        return
+
     def _format_element(self, element):
         return
 
@@ -195,6 +205,9 @@ class BinaryMorseCodeMessage(Message):
         return
 
     def parse(self, message):
+        return
+
+    def _parse_bit(self, bit):
         return
 
     def _parse_element(self, element):
