@@ -13,15 +13,10 @@ logger = logging.getLogger(__name__)
 
 class MorseGenerator(object):
     def __init__(self):
-        pass
-
-    def on(self, nb, *args, **kwargs):
-        for i in range(nb):
-            sys.stdout.write(TRUE)
-
-    def off(self, nb, *args, **kwargs):
-        for i in range(nb):
-            sys.stdout.write(FALSE)
+        self._on_callback = lambda *args: args
+        self._off_callback = lambda *args: args
+        #self._on_callback = lambda: None
+        #self._off_callback = lambda: None
 
     def _feed(self, message):
         self.bin = mtalk.encode(message, encoding_type='binary')
@@ -60,9 +55,46 @@ class MorseGenerator(object):
         for i, bit, nb_bits in self._bit_generator(lst_bits_nb):
             #print("%04d %d %03d" % (i, bit, nb_bits))
             if str(bit) == FALSE:
-                self.off(nb_bits, *args, **kwargs)
+                #self.off(nb_bits, *args, **kwargs)
+                self._off_callback(lst_bits_nb, nb_bits) #, *args, **kwargs)
             elif str(bit) == TRUE:
-                self.on(nb_bits, *args, **kwargs)
+                #self.on(nb_bits, *args, **kwargs)
+                self._on_callback(lst_bits_nb, nb_bits) #, *args, **kwargs)
+
+    def set_callback_on(self, callback, *args, **kwargs):
+        def callback_wrapper(*args, **kwargs):
+            return callback(*args, **kwargs)
+        self._on_callback = callback_wrapper
+
+    def set_callback_off(self, callback, *args, **kwargs):
+        def callback_wrapper(*args, **kwargs):
+            return callback(*args, **kwargs)
+        self._off_callback = callback_wrapper
+
+"""
+def on(self, nb, *args, **kwargs):
+    for i in range(nb):
+        sys.stdout.write(TRUE)
+
+def off(self, nb, *args, **kwargs):
+    for i in range(nb):
+        sys.stdout.write(FALSE)
+
+"""
+
+"""
+"""
+
+def on(lst_bits_nb, nb):
+    #print("on")
+    #print("lst_bits_nb=%s" % lst_bits_nb)
+    for k in range(nb):
+        sys.stdout.write(TRUE)
+    #print("")
+
+def off(lst_bits_nb, nb):
+    for k in range(nb):
+        sys.stdout.write(FALSE)
 
 def main(message="MORSE CODE"):
     logging.basicConfig(level=logging.DEBUG)
@@ -76,6 +108,9 @@ def main(message="MORSE CODE"):
 
 
     morse_gen = MorseGenerator()
+    morse_gen.set_callback_on(on, 'x', 'y', 'z')
+    morse_gen.set_callback_off(off)
+
     logger.debug(message)
     logger.debug(mtalk.encode(message))
     morse_gen.send(message)

@@ -93,6 +93,79 @@ class BIN_MORSE_SEP_NB(SEP_NB):
     char = 1
     word = 1
 
+class _Entity(object):
+    def __init__(self, sep, sep_nb, *args, **kwargs):
+        self.sep = sep # character to separate each char of a word
+        self.sep_nb = sep_nb # nb of such character
+
+    def parse(self, entity):
+        return self._split(entity, self.sep)
+
+    def format(self, entity):
+        return self.sep.join(entity)
+
+    def _split(self, s, separator):
+        """Splits string s using 'separator'
+        if separator is an empty string
+        a list of characters is returned
+
+        >>> message = Message()
+        >>> message._split("abcd" , '')
+        ['a', 'b', 'c', 'd']
+
+        >>> message._split("a b c d" , ' ')
+        ['a', 'b', 'c', 'd']
+        """
+        if separator != '':
+            return s.split(separator)
+        else:
+            return list(s)
+
+class _TextWord(_Entity):
+    """
+    A text word entity class
+    a word is composed of characters
+    separate by a `sep_nb` of `sep`
+
+    >>> entity = _TextWord()
+
+    >>> msg = 'HELLO'
+    >>> entity.parse(msg)
+    ['H', 'E', 'L', 'L', 'O']
+
+    >>> entity.format(['H', 'E', 'L', 'L', 'O'])
+    'HELLO'
+
+    """
+    def __init__(self, *args, **kwargs):
+        super(_TextWord, self).__init__(sep='', sep_nb=1, *args, **kwargs)
+
+class _TextSentence(_Entity):
+    """
+
+    >>> entity = _TextSentence()
+    >>> entity.format(['HELLO', 'WORLD'])
+    'HELLO WORLD'
+
+    >>> entity = _TextSentence()
+    >>> entity.parse('HELLO WORLD')
+    ['HELLO', 'WORLD']
+    """
+    def __init__(self, *args, **kwargs):
+        super(_TextSentence, self).__init__(sep=' ', sep_nb=1, *args, **kwargs)
+
+
+"""
+ToFix
+=====
+
+TextMessage should now use _TextWord and _TextSentence classes
+TextMessage should inherit from _Entity
+
+
+
+"""
+
 class TextMessage(Message):
     """
     A text message class
